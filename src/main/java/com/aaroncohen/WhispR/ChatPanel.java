@@ -1,6 +1,9 @@
 package com.aaroncohen.WhispR;
 
 import javax.swing.*;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 
 /**
  * Code written by Aaron Cohen
@@ -25,7 +28,7 @@ public class ChatPanel {
         //set up contentPanel
         roomLabel.setText("Room: " + room + " | Chatting As: " + name);
         exitButton.addActionListener((e -> {
-            Server.running = false;
+            ChatNetworker.running = false;
             parent.add(new DefaultPanel(parent).getPanel());
             parent.remove(this.contentPanel);
         }));
@@ -34,7 +37,26 @@ public class ChatPanel {
         sendButton.addActionListener((e -> {
             if (messageField.getText().equals("")) return;
 
-            chatPane.setText(chatPane.getText() + name + ": " + messageField.getText() + "\n");
+            try {
+                //create the socket and join group
+                MulticastSocket socket = new MulticastSocket(room);
+                InetAddress group = InetAddress.getByName("230.0.0.0");
+                socket.joinGroup(group);
+
+                //create the packet
+                String message = name + ": " + messageField.getText() + "\n";
+                DatagramPacket packet = new DatagramPacket(message.getBytes(), message.getBytes().length, group, room);
+
+                //send packet and leave
+                socket.send(packet);
+                socket.leaveGroup(group);
+                socket.close();
+
+                //now clear the text field
+                messageField.setText("");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }   //should not be called
         }));
     }
 
