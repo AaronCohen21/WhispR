@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.aaroncohen'
-version '1.0'
+version '1.0.0'
 
 repositories {
     mavenCentral()
@@ -12,22 +12,26 @@ repositories {
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.formdev:flatlaf:2.0.1'
+    implementation group: 'com.intellij', name: 'forms_rt', version: '7.0.3'
 }
 
 test {
     useJUnitPlatform()
 }
 
+
+
 jar {
     manifest {
         attributes(
-                'Main-Class': 'com.aaroncohen.WhispR',
+                'Main-Class': 'com.aaroncohen.WhispR.WhispR',
         )
     }
 }
 
 task fatJar(type: Jar) {
     manifest.from jar.manifest
+    duplicatesStrategy = 'include'
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     } {
