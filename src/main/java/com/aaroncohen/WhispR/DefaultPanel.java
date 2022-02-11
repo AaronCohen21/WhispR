@@ -1,9 +1,9 @@
-package com.aaroncohen.ChattR;
+package com.aaroncohen.WhispR;
 
 import javax.swing.*;
 import java.awt.*;
-import static com.aaroncohen.ChattR.ChattR.ERROR_RED;
-import static com.aaroncohen.ChattR.ChattR.portAvaliable;
+import static com.aaroncohen.WhispR.WhispR.ERROR_RED;
+import static com.aaroncohen.WhispR.WhispR.portAvaliable;
 
 /**
  * Code written by Aaron Cohen

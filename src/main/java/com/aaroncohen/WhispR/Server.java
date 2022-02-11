@@ -1,4 +1,4 @@
-package com.aaroncohen.ChattR;
+package com.aaroncohen.WhispR;
 
 import javax.swing.*;
 import java.net.*;
