@@ -8,7 +8,7 @@ import java.net.*;
  * File Created On: 02/10/2022
  */
 
-public class Server extends Thread {
+public class ChatNetworker extends Thread {
 
     private int port;
     private JPanel parent;
@@ -16,7 +16,7 @@ public class Server extends Thread {
 
     public static boolean running = false;
 
-    public Server(JPanel parent, ChatPanel chatPanel, int port) {
+    public ChatNetworker(JPanel parent, ChatPanel chatPanel, int port) {
         this.parent = parent;
         this.chatPanel = chatPanel;
         this.port = port;
@@ -34,13 +34,11 @@ public class Server extends Thread {
             while (running) {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 try {
-                    //when receiving a packet, the server will simply re-broadcast the packet which will then show up on all clients
+                    //when receiving a packet, display the message on the screen
                     socket.receive(packet);
                     //update the host's chat board
                     String received = new String(packet.getData(), 0, packet.getLength());
                     chatPanel.addMessage(received);
-                    //broadcast
-                    socket.send(packet);
                 } catch (SocketTimeoutException e) {}
             }
             socket.leaveGroup(group);
