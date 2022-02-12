@@ -39,3 +39,5 @@ task fatJar(type: Jar) {
     }
     with jar
 }
+sourceCompatibility = JavaVersion.VERSION_1_9
+targetCompatibility = JavaVersion.VERSION_1_9

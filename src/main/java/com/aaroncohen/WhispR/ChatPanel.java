@@ -1,6 +1,8 @@
 package com.aaroncohen.WhispR;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -34,30 +36,37 @@ public class ChatPanel {
         }));
 
         //sending messages
-        sendButton.addActionListener((e -> {
-            if (messageField.getText().equals("")) return;
-
-            try {
-                //create the socket and join group
-                MulticastSocket socket = new MulticastSocket(room);
-                InetAddress group = InetAddress.getByName("230.0.0.0");
-                socket.joinGroup(group);
-
-                //create the packet
-                String message = name + ": " + messageField.getText() + "\n";
-                DatagramPacket packet = new DatagramPacket(message.getBytes(), message.getBytes().length, group, room);
-
-                //send packet and leave
-                socket.send(packet);
-                socket.leaveGroup(group);
-                socket.close();
-
-                //now clear the text field
-                messageField.setText("");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }   //should not be called
+        messageField.addActionListener((e -> {
+            sendMessage();
         }));
+        sendButton.addActionListener((e -> {
+            sendMessage();
+        }));
+    }
+
+    public void sendMessage() {
+        if (messageField.getText().equals("")) return;
+
+        try {
+            //create the socket and join group
+            MulticastSocket socket = new MulticastSocket(room);
+            InetAddress group = InetAddress.getByName("230.0.0.0");
+            socket.joinGroup(group);
+
+            //create the packet
+            String message = name + ": " + messageField.getText() + "\n";
+            DatagramPacket packet = new DatagramPacket(message.getBytes(), message.getBytes().length, group, room);
+
+            //send packet and leave
+            socket.send(packet);
+            socket.leaveGroup(group);
+            socket.close();
+
+            //now clear the text field
+            messageField.setText("");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }   //should not be called
     }
 
     public void addMessage(String msg) {

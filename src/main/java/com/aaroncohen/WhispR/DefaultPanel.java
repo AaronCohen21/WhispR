@@ -2,7 +2,10 @@ package com.aaroncohen.WhispR;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+
 import static com.aaroncohen.WhispR.WhispR.ERROR_RED;
+import static com.aaroncohen.WhispR.WhispR.settings;
 
 /**
  * Code written by Aaron Cohen
@@ -24,10 +27,20 @@ public class DefaultPanel {
         this.parent = parent;
         Color defaultTextColor = nameLabel.getForeground();
 
+        //set up components here
+        if (settings.rememberName) nameField.setText(settings.name);
+        if (settings.rememberRoomCodes) roomField.setText(settings.lastRoomCode);
+
         //when the join room button is clicked
         joinButton.addActionListener((e -> {
             //if the name field is empty make the label red
-            if (nameField.getText().equals("")) nameLabel.setForeground(ERROR_RED); else nameLabel.setForeground(defaultTextColor);
+            if (nameField.getText().equals("")) nameLabel.setForeground(ERROR_RED); else {
+                nameLabel.setForeground(defaultTextColor);
+                //save the name to settings for autofill
+                settings.name = nameField.getText();
+                //do nothing if settings can't save, this shouldn't happen
+                try {settings.save();} catch (IOException ex) {}
+            }
 
             //test if the room is valid
             boolean validRoom = true;

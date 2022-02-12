@@ -3,6 +3,8 @@ package com.aaroncohen.WhispR;
 import javax.swing.*;
 import java.net.*;
 
+import static com.aaroncohen.WhispR.WhispR.settings;
+
 /**
  * Code written by Aaron Cohen
  * File Created On: 02/10/2022
@@ -31,6 +33,8 @@ public class ChatNetworker extends Thread {
             byte[] buf = new byte[256];
             InetAddress group = InetAddress.getByName("230.0.0.0");
             socket.joinGroup(group);
+            //now that the client is successfully connected, save the room code
+            settings.lastRoomCode = "" + port;
             while (running) {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 try {
