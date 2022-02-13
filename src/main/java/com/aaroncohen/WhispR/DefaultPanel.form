@@ -30,7 +30,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Room must be a number between 4096 and 35565"/>
+            </properties>
           </component>
           <component id="792fe" class="javax.swing.JLabel" binding="nameLabel">
             <constraints>

@@ -1,8 +1,6 @@
 package com.aaroncohen.WhispR;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -19,6 +17,7 @@ public class ChatPanel {
     private JTextField messageField;
     private JButton sendButton;
     private JButton exitButton;
+    private JLabel nameLabel;
 
     private String name;
     private int room;
@@ -28,7 +27,10 @@ public class ChatPanel {
         this.name = name;
         this.room = room;
         //set up contentPanel
-        roomLabel.setText("Room: " + room + " | Chatting As: " + name);
+        roomLabel.setText("" + room);
+        roomLabel.putClientProperty("FlatLaf.style", "font: bold");
+        nameLabel.setText(name);
+        nameLabel.putClientProperty("FlatLaf.style", "font: bold");
         exitButton.addActionListener((e -> {
             ChatNetworker.running = false;
             parent.add(new DefaultPanel(parent).getPanel());
@@ -54,7 +56,7 @@ public class ChatPanel {
             socket.joinGroup(group);
 
             //create the packet
-            String message = name + ": " + messageField.getText() + "\n";
+            String message = "<" + name + ">: " + messageField.getText() + "\n";
             DatagramPacket packet = new DatagramPacket(message.getBytes(), message.getBytes().length, group, room);
 
             //send packet and leave
@@ -71,6 +73,7 @@ public class ChatPanel {
 
     public void addMessage(String msg) {
         chatPane.setText(chatPane.getText() + msg + "\n");
+        chatPane.setCaretPosition(chatPane.getDocument().getLength());
     }
 
     public JPanel getPanel() {
