@@ -104,7 +104,11 @@ public class WhispR extends JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error: Couldn't load settings", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-            System.exit(-1);
+        }
+        //if settings exists but is empty (incorrect file permissions)
+        if (settings == null) {
+            JOptionPane.showMessageDialog(null, "Error: Incorrect file permissions, couldn't load settings\n", "Error", JOptionPane.ERROR_MESSAGE);
+            settings = new Settings();
         }
         //set up FlatLaf
         if (settings.theme == Settings.Theme.Dark) FlatDarculaLaf.setup(); else FlatLightLaf.setup();
