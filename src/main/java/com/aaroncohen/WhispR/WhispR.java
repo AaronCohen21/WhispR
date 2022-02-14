@@ -1,6 +1,5 @@
 package com.aaroncohen.WhispR;
 
-import com.apple.eawt.Application;
 import com.formdev.flatlaf.*;
 import com.google.gson.Gson;
 import net.coobird.thumbnailator.Thumbnails;
@@ -55,19 +54,6 @@ public class WhispR extends JFrame {
                 }
             }
         });
-        //mac cmd+q callback
-        Application a = Application.getApplication();
-        a.setQuitHandler((e, response) -> {
-            try {
-                settings.size = getSize();
-                settings.posx = getX();
-                settings.posy = getY();
-                settings.save();
-                System.exit(0);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
         //set up components here
         DefaultPanel defaultPanel = new DefaultPanel(contentPanel);
         contentPanel.add(defaultPanel.getPanel());
@@ -97,6 +83,8 @@ public class WhispR extends JFrame {
     }
 
     public static void main(String[] args) {
+        //mac cmd+q support
+        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
         //load or create new settings
         File settingsFile = new File(System.getProperty("user.home") + "/.WhispR");
         try {
