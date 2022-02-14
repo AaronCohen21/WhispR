@@ -17,6 +17,7 @@ public class SettingsPanel {
     private JButton saveButton;
     private JButton cancelButton;
     private JCheckBox rememberNameBox;
+    private JCheckBox notificationsBox;
 
     private JPanel parent;
 
@@ -33,12 +34,16 @@ public class SettingsPanel {
         rememberNameBox.setSelected(settings.rememberName);
         //remember room codes
         rememberRoomCodesBox.setSelected(settings.rememberRoomCodes);
+        //notifications
+        notificationsBox.setSelected(settings.notificationSounds);
         //save and cancel actions
         saveButton.addActionListener((e -> {
             try {
+                //save settings here
                 settings.theme = (themeBox.getSelectedIndex() == 0) ? Settings.Theme.Dark : Settings.Theme.Light;
                 settings.rememberName = rememberNameBox.isSelected();
                 settings.rememberRoomCodes = rememberRoomCodesBox.isSelected();
+                settings.notificationSounds = notificationsBox.isSelected();
                 settings.save();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error: Could not save changes", "Error", JOptionPane.ERROR_MESSAGE);

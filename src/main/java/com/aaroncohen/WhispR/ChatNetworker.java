@@ -1,6 +1,10 @@
 package com.aaroncohen.WhispR;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
+import java.io.File;
 import java.net.*;
 
 import static com.aaroncohen.WhispR.WhispR.settings;
@@ -15,16 +19,19 @@ public class ChatNetworker extends Thread {
     private int port;
     private JPanel parent;
     private ChatPanel chatPanel;
-
     private String name;
 
     public static boolean running = false;
+    private AudioThread audioThread;
+
+    public static int unreadMessages;
 
     public ChatNetworker(JPanel parent, ChatPanel chatPanel, int port, String name) {
         this.parent = parent;
         this.chatPanel = chatPanel;
         this.port = port;
         this.name = name;
+        unreadMessages = -1;
     }
 
     @Override
@@ -49,6 +56,7 @@ public class ChatNetworker extends Thread {
                     //update the host's chat board
                     String received = new String(packet.getData(), 0, packet.getLength());
                     chatPanel.addMessage(received);
+                    if (settings.notificationSounds) playSound();
                 } catch (SocketTimeoutException e) {}
             }
             //send a leave message
@@ -80,5 +88,27 @@ public class ChatNetworker extends Thread {
         } catch (Exception ex) {
             ex.printStackTrace();
         }   //should not be called
+    }
+
+    public void playSound() {
+        try {audioThread.clip.stop();} catch (Exception ignored) {}
+        audioThread = new AudioThread();
+        audioThread.start();
+    }
+
+    private class AudioThread extends Thread {
+
+        public Clip clip;
+
+        public void run() {
+            try {
+                clip = AudioSystem.getClip();
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/res/pop.wav"));
+                clip.open(inputStream);
+                clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

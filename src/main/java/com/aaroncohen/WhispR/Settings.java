@@ -39,6 +39,12 @@ public class Settings {
     protected String lastRoomCode;
 
     /**
+     * determines weather or not to play a sound effect each time the user receives a new message
+     * default = on
+     */
+    protected boolean notificationSounds;
+
+    /**
      * window config options:
      *
      * Position defaults to (-1,-1) which is the center of the screen,
@@ -57,6 +63,8 @@ public class Settings {
 
         rememberRoomCodes = true;
         lastRoomCode = "";
+
+        notificationSounds = true;
 
         posx = -1;
         posy = -1;
