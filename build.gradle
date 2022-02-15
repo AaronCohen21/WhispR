@@ -16,10 +16,6 @@ dependencies {
     implementation "net.coobird:thumbnailator:[0.4, 0.5)"
 }
 
-test {
-    useJUnitPlatform()
-}
-
 jar {
     manifest {
         attributes(
@@ -39,4 +35,22 @@ task fatJar(type: Jar) {
         exclude "META-INF/*.RSA"
     }
     with jar
+}
+
+task jpackageMac {
+    doLast {
+        exec {
+            workingDir '.'
+            commandLine 'sh', '-c', '$(/usr/libexec/java_home)/bin/jpackage --input build/libs/ \
+                --app-version 1.0.1 \
+                --main-jar WhispR-1.0.1.jar \
+                --icon "src/main/resources/appicon/WhispR.icns" \
+                --name WhispR \
+                --dest build/dist/ \
+                --vendor "Aaron Cohen" \
+                --copyright "Made By Aaron Cohen" \
+                --description "A lightweight Java chat app I made for fun because I got really bored one day" \
+                --main-class com.aaroncohen.WhispR.WhispR'
+        }
+    }
 }
