@@ -75,7 +75,8 @@ public class Settings {
     public void save() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String data = gson.toJson(this);
-        PrintWriter pw = new PrintWriter(new FileWriter(System.getProperty("user.home") + "/.WhispR"));
+        PrintWriter pw = new PrintWriter(new FileWriter(System.getProperty("user.home") +
+                (System.getProperty("os.name").startsWith("Windows") ? "/AppData/Roaming/WhispR" : "") + "/.WhispR"));
         pw.print(data);
         pw.close();
     }

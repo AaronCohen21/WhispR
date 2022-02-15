@@ -90,14 +90,15 @@ public class WhispR extends JFrame implements FileLoader {
         //mac cmd+q support
         System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
         //load or create new settings
-        File settingsFile = new File(System.getProperty("user.home") + "/.WhispR");
+        boolean win = System.getProperty("os.name").startsWith("Windows");
+        File settingsFile = new File(System.getProperty("user.home") +
+                (win ? "/AppData/Roaming/WhispR" : "") + "/.WhispR");
         try {
             if (!settingsFile.exists()) {
                 settings = new Settings();
                 //write the settings file
+                if (win) new File(System.getProperty("user.home") + "/AppData/Roaming/WhispR").mkdir();
                 settingsFile.createNewFile();
-                //if the file is on a Windows system the next line will hide it, otherwise it will be hidden by default
-                try {Files.setAttribute(Paths.get(settingsFile.getPath()), "dos:hidden", true);} catch (Exception ignored) {}
                 //write settings output to file
                 settings.save();
             } else {
@@ -109,9 +110,9 @@ public class WhispR extends JFrame implements FileLoader {
             JOptionPane.showMessageDialog(null, "Error: Couldn't load settings", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-        //if settings exists but is empty (incorrect file permissions)
+        //if settings exists but is empty (incorrect file permissions or other errors)
         if (settings == null) {
-            JOptionPane.showMessageDialog(null, "Error: Incorrect file permissions, couldn't load settings\n", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error: Couldn't load settings\n", "Error", JOptionPane.ERROR_MESSAGE);
             settings = new Settings();
         }
         //set up FlatLaf
