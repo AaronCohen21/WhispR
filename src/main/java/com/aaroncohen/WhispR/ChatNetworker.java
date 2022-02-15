@@ -4,6 +4,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.net.*;
 
@@ -14,7 +15,7 @@ import static com.aaroncohen.WhispR.WhispR.settings;
  * File Created On: 02/10/2022
  */
 
-public class ChatNetworker extends Thread {
+public class ChatNetworker extends Thread implements FileLoader {
 
     private int port;
     private JPanel parent;
@@ -103,7 +104,8 @@ public class ChatNetworker extends Thread {
         public void run() {
             try {
                 clip = AudioSystem.getClip();
-                AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/res/pop.wav"));
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(
+                        getFileFromResourceAsStream("pop.wav")));
                 clip.open(inputStream);
                 clip.start();
             } catch (Exception e) {

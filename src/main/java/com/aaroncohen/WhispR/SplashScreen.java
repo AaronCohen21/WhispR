@@ -1,8 +1,10 @@
 package com.aaroncohen.WhispR;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.io.IOException;
 
 import static com.aaroncohen.WhispR.WhispR.settings;
 
@@ -11,7 +13,7 @@ import static com.aaroncohen.WhispR.WhispR.settings;
  * File Created On: 02/13/2022
  */
 
-public class SplashScreen extends JFrame {
+public class SplashScreen extends JFrame implements FileLoader {
 
     private JPanel panel;
     private JLabel splashIcon;
@@ -19,7 +21,10 @@ public class SplashScreen extends JFrame {
     public SplashScreen() {
         setContentPane(panel);
         setUndecorated(true);
-        splashIcon.setIcon(new ImageIcon("src/res/splash_" + (settings.theme == Settings.Theme.Dark ? "white" : "black") + ".png"));
+        try {
+            splashIcon.setIcon(new ImageIcon(ImageIO.read(getFileFromResourceAsStream(
+                    "splash_" + (settings.theme == Settings.Theme.Dark ? "white" : "black") + ".png"))));
+        } catch (Exception ignored) {}
         setMinimumSize(new Dimension(500,124));
         setLocationRelativeTo(null);
         setVisible(true);

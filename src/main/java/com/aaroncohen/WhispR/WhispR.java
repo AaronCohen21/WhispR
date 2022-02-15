@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  * File Created On: 02/10/2022
  */
 
-public class WhispR extends JFrame {
+public class WhispR extends JFrame implements FileLoader {
 
     private JPanel defaultPanel;
     private JLabel titleLabel;
@@ -61,9 +61,13 @@ public class WhispR extends JFrame {
         //scale images
         try {
             //add logo
-            logoLabel.setIcon(new ImageIcon(Thumbnails.of("src/res/logo_" + (settings.theme == Settings.Theme.Dark ? "white" : "black") + ".png").size(40, 40).asBufferedImage()));
+            logoLabel.setIcon(new ImageIcon(Thumbnails.of(getFileFromResourceAsStream(
+                    "logo_" + (settings.theme == Settings.Theme.Dark ? "white" : "black") + ".png"))
+                    .size(40, 40).asBufferedImage()));
             //settings button
-            settingsButton.setIcon(new ImageIcon(Thumbnails.of("src/res/settings_" + (settings.theme == Settings.Theme.Dark ? "white" : "black") + ".png").size(25, 25).asBufferedImage()));
+            settingsButton.setIcon(new ImageIcon(Thumbnails.of(getFileFromResourceAsStream(
+                    "settings_" + (settings.theme == Settings.Theme.Dark ? "white" : "black") + ".png"))
+                    .size(25, 25).asBufferedImage()));
         } catch (Exception e) {
             e.printStackTrace();
         }    //there should be no exception thrown
