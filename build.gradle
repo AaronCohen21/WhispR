@@ -54,3 +54,24 @@ task jpackageMac {
         }
     }
 }
+
+task jpackageWindows {
+    doLast {
+        exec {
+            workingDir '.'
+            commandLine 'Powershell', 'jpackage --input build/libs/ \
+                    --app-version 1.0.1 \
+                    --main-jar WhispR-1.0.1.jar \
+                    --icon "src/main/resources/appicon/WhispR.ico" \
+                    --name WhispR \
+                    --dest build/dist/ \
+                    --vendor \'Aaron Cohen\' \
+                    --copyright \'Made By Aaron Cohen\' \
+                    --description \'A lightweight Java chat app I made for fun because I got really bored one day\' \
+                    --main-class com.aaroncohen.WhispR.WhispR \
+                    --win-dir-chooser \
+                    --win-menu \
+                    --win-shortcut'
+        }
+    }
+}
